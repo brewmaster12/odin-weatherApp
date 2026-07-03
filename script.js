@@ -6,7 +6,8 @@ async function getWeather() {
     try {
         const response = await fetch(baseUrl + weatherLocation + "?key=" + key);
         const weather = await response.json();
-        console.log(weather);
+        const processed = processWeatherData(weather);
+        console.log(processed);
     } catch (error) {
         console.error(error);
     }
@@ -14,4 +15,10 @@ async function getWeather() {
 
 getWeather();
 
+function processWeatherData(weatherJson) {
+    const currentConditions = weatherJson.currentConditions;
 
+    return {
+        temp: currentConditions.temp,
+    }
+}
