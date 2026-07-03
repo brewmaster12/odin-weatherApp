@@ -1,28 +1,37 @@
 const baseUrl = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
 const key = "H9EZUSFRZVGDKWCKR9TMKAYNK";
-let weatherLocation = "dublin";
 
-async function getWeather() {
+async function getWeather(location) {
     try {
-        const response = await fetch(baseUrl + weatherLocation + "?key=" + key);
+        const response = await fetch(baseUrl + location + "?key=" + key);
         const weather = await response.json();
         const processed = processWeatherData(weather);
-        console.log(weather);
         console.log(processed)
     } catch (error) {
         console.error(error);
     }
 }
 
-getWeather();
-
 function processWeatherData(weatherJson) {
     const currentConditions = weatherJson.currentConditions;
     const resolvedAddress = weatherJson.resolvedAddress;
+    const description = weatherJson.description;
 
     return {
         temp: currentConditions.temp,
         conditions: currentConditions.conditions,
-        location: resolvedAddress
+        location: resolvedAddress,
+        description: description,
     }
 }
+
+const form = document.getElementById("weather-form");
+const input = document.getElementById("location-input");
+
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const location = input.value.trim();
+    if (location) {
+        getWeather(location);
+    }
+});
