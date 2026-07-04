@@ -6,10 +6,9 @@ async function getWeather(location) {
         const response = await fetch(baseUrl + location + "?key=" + key);
         const weather = await response.json();
         const processed = processWeatherData(weather);
-        console.log(processed);
         displayWeather(processed);
     } catch (error) {
-        console.error(error);
+        displayError();
     }
 }
 
@@ -38,6 +37,8 @@ form.addEventListener("submit", (event) => {
 });
 
 function displayWeather(data) {
+    document.getElementById("error-message").classList.add("hidden");
+
     document.getElementById("location-name").textContent = data.location;
     document.getElementById("conditions").textContent = data.conditions;
     document.getElementById("temp").textContent = data.temp;
@@ -45,4 +46,11 @@ function displayWeather(data) {
 
 
     document.getElementById("weather-result").classList.remove("hidden");
+}
+
+function displayError() {
+    document.getElementById("weather-result").classList.add("hidden");
+    const error = document.getElementById("error-message");
+    error.textContent = "Sorry, couldn't find results for that location.";
+    error.classList.remove("hidden");
 }
