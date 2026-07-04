@@ -6,7 +6,8 @@ async function getWeather(location) {
         const response = await fetch(baseUrl + location + "?key=" + key);
         const weather = await response.json();
         const processed = processWeatherData(weather);
-        console.log(processed)
+        console.log(processed);
+        displayWeather(processed);
     } catch (error) {
         console.error(error);
     }
@@ -35,3 +36,13 @@ form.addEventListener("submit", (event) => {
         getWeather(location);
     }
 });
+
+function displayWeather(data) {
+    document.getElementById("location-name").textContent = data.location;
+    document.getElementById("conditions").textContent = data.conditions;
+    document.getElementById("temp").textContent = data.temp;
+    document.getElementById("description").textContent = data.description;
+
+
+    document.getElementById("weather-result").classList.remove("hidden");
+}
