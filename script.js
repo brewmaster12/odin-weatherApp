@@ -2,6 +2,7 @@ const baseUrl = "https://weather.visualcrossing.com/VisualCrossingWebServices/re
 const key = "H9EZUSFRZVGDKWCKR9TMKAYNK";
 
 async function getWeather(location) {
+    showLoading();
     try {
         const response = await fetch(baseUrl + location + "?key=" + key);
         const weather = await response.json();
@@ -9,6 +10,8 @@ async function getWeather(location) {
         displayWeather(processed);
     } catch (error) {
         displayError();
+    } finally {
+        hideLoading();
     }
 }
 
@@ -44,7 +47,6 @@ function displayWeather(data) {
     document.getElementById("temp").textContent = data.temp;
     document.getElementById("description").textContent = data.description;
 
-
     document.getElementById("weather-result").classList.remove("hidden");
 }
 
@@ -53,4 +55,14 @@ function displayError() {
     const error = document.getElementById("error-message");
     error.textContent = "Sorry, couldn't find results for that location.";
     error.classList.remove("hidden");
+}
+
+function showLoading() {
+    document.getElementById("loading").classList.remove("hidden");
+    document.getElementById("weather-result").classList.add("hidden");
+    document.getElementById("error-message").classList.add("hidden");
+}
+
+function hideLoading() {
+    document.getElementById("loading").classList.add("hidden");
 }
